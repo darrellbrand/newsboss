@@ -35,7 +35,7 @@ class NewsViewModel @Inject constructor(private val getNewsUseCase: GetNewsUseCa
 
                 getNewsUseCase.getNews()?.let { news ->
                     println(news.size)
-                    _news.value = news.filter { it.image_url.isNotBlank()  }
+                    _news.value = news.filter { it.image_url?.isNotEmpty() == true }
                 }
                 _screenState.value = ScreenState.NewsScreen().screen
         }
@@ -44,7 +44,7 @@ class NewsViewModel @Inject constructor(private val getNewsUseCase: GetNewsUseCa
     fun fetchCryptoNews() {
         viewModelScope.launch {
             getNewsUseCase.getCryptoNews()?.let { news ->
-                _news.value = news.filter { it.image_url.isNotEmpty() }
+                _news.value = news.filter { it.image_url?.isNotEmpty() == true }
             }
             _screenState.value = ScreenState.CryptoNewsScreen().screen
         }

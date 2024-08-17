@@ -121,7 +121,7 @@ fun NewsItem(newsItem: APILatestResultItem) {
         modifier = Modifier
             .padding(15.dp)
             .clickable {
-                openLink(newsItem.link, context)
+                openLink(newsItem.link ?: "", context)
             }
     ) {
         AsyncImage(
@@ -145,22 +145,22 @@ fun NewsItem(newsItem: APILatestResultItem) {
                     .clip(RoundedCornerShape(5.dp))
             )
             Text(
-                text = newsItem.source_id,
+                text = newsItem.source_id ?: "",
                 modifier = Modifier.padding(5.dp),
                 style = MaterialTheme.typography.bodySmall
             )
             Text(
-                text = calculateTimeSince(newsItem.pubDate),
+                text = calculateTimeSince(newsItem.pubDate ?: ""),
                 modifier = Modifier.padding(5.dp),
                 style = MaterialTheme.typography.bodySmall
             )
         }
         Text(
-            text = newsItem.title,
+            text = newsItem.title ?: "",
             style = MaterialTheme.typography.titleLarge
         )
         Spacer(modifier = Modifier.size(5.dp))
-        Text(text = newsItem.description, style = MaterialTheme.typography.bodyMedium)
+        Text(text = newsItem.description ?: "", style = MaterialTheme.typography.bodyMedium)
         HorizontalDivider(modifier = Modifier.padding(5.dp))
 
     }
