@@ -125,7 +125,7 @@ fun NewsItem(newsItem: APILatestResultItem) {
             }
     ) {
         AsyncImage(
-            model = newsItem.image_url,
+            model = newsItem.urlToImage,
             contentDescription = "news photo",
             modifier = Modifier
                 .padding(5.dp)

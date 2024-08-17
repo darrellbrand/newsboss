@@ -14,7 +14,7 @@ class NewsRepositoryImpl @Inject constructor(private val api: APIService) : News
         try {
             val response = api.getLatest()
             if (response.isSuccessful) {
-                return response.body()?.results
+                return response.body()?.articles
             } else {
                 println("news repo news response failed")
             }
@@ -30,7 +30,7 @@ class NewsRepositoryImpl @Inject constructor(private val api: APIService) : News
         try {
             val response = api.getCryptoLatest()
             if (response.isSuccessful) {
-                return response.body()?.results
+                return response.body()?.articles
             } else {
                 println("news repo crypto response failed")
             }

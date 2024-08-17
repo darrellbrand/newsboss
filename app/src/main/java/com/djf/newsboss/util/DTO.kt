@@ -3,7 +3,7 @@ package com.djf.newsboss.util
 data class APILatestResult(
     val status: String = "",
     val totalResults: Int = -1,
-    val results: List<APILatestResultItem>
+    val articles: List<APILatestResultItem>
 )
 
 data class APILatestResultItem(
@@ -15,5 +15,7 @@ data class APILatestResultItem(
     val video_url: String = "",
     val source_id: String ="",
     val source_icon: String = "",
-    val pubDate: String =""
+    val pubDate: String ="",
+    val urlToImage: String =""
 )
+

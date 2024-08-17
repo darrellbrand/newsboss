@@ -16,7 +16,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
     @Provides
-    fun provideBaseUrl(): String = "https://newsdata.io/api/1/"
+    fun provideBaseUrl(): String = "https://newsapi.org/v2/"
 
     @Provides
     @Singleton
