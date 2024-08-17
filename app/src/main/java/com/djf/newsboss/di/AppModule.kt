@@ -37,11 +37,5 @@ object AppModule {
     @Provides
     @Singleton
     fun provideGetNewsUseCase(repository: NewsRepository): GetNewsUseCase = GetNewsUseCase(repository)
-
-
-    @Provides
-    @Singleton
-    fun provideNewsViewModel(getNewsUseCase: GetNewsUseCase): NewsViewModel =
-        NewsViewModel(getNewsUseCase)
     
 }
