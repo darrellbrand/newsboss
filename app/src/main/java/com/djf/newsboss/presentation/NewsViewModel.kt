@@ -9,6 +9,9 @@ import com.djf.newsboss.util.APILatestResult
 import com.djf.newsboss.util.APILatestResultItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,7 +19,10 @@ import javax.inject.Inject
 class NewsViewModel @Inject constructor(private val getNewsUseCase: GetNewsUseCase) : ViewModel() {
 
     private val _news = MutableStateFlow(listOf(APILatestResultItem()))
-    val news = _news
+    val news = _news.asStateFlow()
+
+    private val _screenState = MutableStateFlow(ScreenState.NewsScreen().screen)
+    val screen = _screenState
 
     init {
         fetchNews()
@@ -24,16 +30,19 @@ class NewsViewModel @Inject constructor(private val getNewsUseCase: GetNewsUseCa
 
     fun fetchNews() {
         viewModelScope.launch {
-            getNewsUseCase.getNews()?.let {
-                _news.value = it
+            getNewsUseCase.getNews()?.let { news ->
+                _news.value = news.filter { it.image_url.isNotEmpty()  }
             }
+            _screenState.value = ScreenState.NewsScreen().screen
         }
     }
+
     fun fetchCryptoNews() {
         viewModelScope.launch {
-            getNewsUseCase.getCryptoNews()?.let {
-                _news.value = it
+            getNewsUseCase.getCryptoNews()?.let { news ->
+                _news.value = news.filter { it.image_url.isNotEmpty() }
             }
+            _screenState.value = ScreenState.CryptoNewsScreen().screen
         }
     }
 

@@ -56,7 +56,8 @@ import com.djf.newsboss.util.calculateTimeSince
 fun NewsScreen(
     list: State<List<APILatestResultItem>>,
     clickNews: () -> Unit,
-    clickCrypto: () -> Unit
+    clickCrypto: () -> Unit,
+    screen: State<Screen>
 ) {
     Scaffold(
         bottomBar = {
@@ -66,7 +67,7 @@ fun NewsScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    NavigationBarItem(selected = true, onClick = { clickNews() }, icon = {
+                    NavigationBarItem(selected = screen.value == Screen.NEWS, onClick = { clickNews() }, icon = {
                         Icon(
                             imageVector = ImageVector.vectorResource(id = R.drawable.news_24dp_e8eaed_fill0_wght400_grad0_opsz24),
                             modifier = Modifier,
@@ -75,7 +76,7 @@ fun NewsScreen(
                     }, label = {
                         Text(text = "news")
                     })
-                    NavigationBarItem(selected = true, onClick = { clickCrypto() }, icon = {
+                    NavigationBarItem(selected = screen.value == Screen.CRYPTO, onClick = { clickCrypto() }, icon = {
                         Icon(
                             imageVector = ImageVector.vectorResource(id = R.drawable.account_balance_24dp_e8eaed_fill0_wght400_grad0_opsz24),
                             modifier = Modifier,

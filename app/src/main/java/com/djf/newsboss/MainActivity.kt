@@ -19,11 +19,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val news = viewModel.news.collectAsStateWithLifecycle()
+            val screen = viewModel.screen.collectAsStateWithLifecycle()
             NewsBossTheme {
                 NewsScreen(
                     list = news,
                     clickNews = { viewModel.fetchNews() },
-                    clickCrypto = { viewModel.fetchCryptoNews() })
+                    clickCrypto = { viewModel.fetchCryptoNews() },
+                    screen)
             }
         }
     }
