@@ -22,11 +22,20 @@ class NewsViewModel @Inject constructor(private val getNewsUseCase: GetNewsUseCa
         fetchNews()
     }
 
-    private fun fetchNews() {
+    fun fetchNews() {
         viewModelScope.launch {
             getNewsUseCase.getNews()?.let {
                 _news.value = it
             }
         }
     }
+    fun fetchCryptoNews() {
+        viewModelScope.launch {
+            getNewsUseCase.getCryptoNews()?.let {
+                _news.value = it
+            }
+        }
+    }
+
+
 }

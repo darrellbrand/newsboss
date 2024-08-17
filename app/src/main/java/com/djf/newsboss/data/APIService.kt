@@ -9,6 +9,11 @@ import retrofit2.http.Query
 interface APIService {
 
 
-    @GET("latest?apikey=pub_51074673c2726bf87e6698bf907871a0f54d2")
+    @GET("latest?country=us&apikey=pub_51074673c2726bf87e6698bf907871a0f54d2")
     suspend fun getLatest(): Response<APILatestResult>
+
+    @GET("latest?country=us&apikey=pub_51074673c2726bf87e6698bf907871a0f54d2&q=cryptocurrency")
+    suspend fun getCryptoLatest(): Response<APILatestResult>
+
+
 }

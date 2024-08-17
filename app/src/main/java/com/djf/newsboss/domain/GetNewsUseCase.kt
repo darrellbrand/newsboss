@@ -9,4 +9,7 @@ class GetNewsUseCase @Inject constructor(private val newsRepository: NewsReposit
     suspend fun getNews() : List<APILatestResultItem>?{
         return newsRepository.getNews()
     }
+    suspend fun getCryptoNews() : List<APILatestResultItem>?{
+        return newsRepository.getCryptoNews()
+    }
 }

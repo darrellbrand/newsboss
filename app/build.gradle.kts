@@ -55,7 +55,8 @@ android {
 
 dependencies {
 
-
+//mav
+    implementation(libs.androidx.navigation.compose)
     //vm
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     //coil
@@ -71,9 +72,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     //collectasstatewithlifecycle // compose
-     implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     //base
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

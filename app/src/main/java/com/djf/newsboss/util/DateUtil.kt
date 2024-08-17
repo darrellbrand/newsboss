@@ -6,6 +6,7 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 fun calculateTimeSince(dateString: String, pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
+    if(dateString.isEmpty()) return ""
     val dateFormat = SimpleDateFormat(pattern, Locale.getDefault())
     val inputDate: Date? = dateFormat.parse(dateString)
 

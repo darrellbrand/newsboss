@@ -12,17 +12,35 @@ import javax.inject.Inject
 class NewsRepositoryImpl @Inject constructor(private val api: APIService) : NewsRepository {
     override suspend fun getNews(): List<APILatestResultItem>? {
 
+
         try {
             val response = api.getLatest()
             if (response.isSuccessful) {
                 return response.body()?.results
             } else {
-                println("news repo response failed")
+                println("news repo news response failed")
             }
         } catch (e: Exception) {
             println("news repo exception $e")
         }
 
         return null
+
     }
+
+    override suspend fun getCryptoNews(): List<APILatestResultItem>? {
+        try {
+            val response = api.getCryptoLatest()
+            if (response.isSuccessful) {
+                return response.body()?.results
+            } else {
+                println("news repo crypto response failed")
+            }
+        } catch (e: Exception) {
+            println("news repo crypto exception $e")
+        }
+
+        return null
+    }
+
 }

@@ -15,14 +15,15 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val viewModel : NewsViewModel by viewModels()
-
+        val viewModel: NewsViewModel by viewModels()
         enableEdgeToEdge()
         setContent {
             val news = viewModel.news.collectAsStateWithLifecycle()
             NewsBossTheme {
-                NewsScreen(list = news)
+                NewsScreen(
+                    list = news,
+                    clickNews = { viewModel.fetchNews() },
+                    clickCrypto = { viewModel.fetchCryptoNews() })
             }
         }
     }
