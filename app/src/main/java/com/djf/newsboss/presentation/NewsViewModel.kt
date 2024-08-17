@@ -8,11 +8,13 @@ import com.djf.newsboss.domain.NewsRepository
 import com.djf.newsboss.util.APILatestResult
 import com.djf.newsboss.util.APILatestResultItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,10 +32,12 @@ class NewsViewModel @Inject constructor(private val getNewsUseCase: GetNewsUseCa
 
     fun fetchNews() {
         viewModelScope.launch {
-            getNewsUseCase.getNews()?.let { news ->
-                _news.value = news.filter { it.image_url.isNotEmpty()  }
-            }
-            _screenState.value = ScreenState.NewsScreen().screen
+
+                getNewsUseCase.getNews()?.let { news ->
+                    println(news.size)
+                    _news.value = news.filter { it.image_url.isNotBlank()  }
+                }
+                _screenState.value = ScreenState.NewsScreen().screen
         }
     }
 

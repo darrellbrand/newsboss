@@ -11,8 +11,6 @@ import javax.inject.Inject
 
 class NewsRepositoryImpl @Inject constructor(private val api: APIService) : NewsRepository {
     override suspend fun getNews(): List<APILatestResultItem>? {
-
-
         try {
             val response = api.getLatest()
             if (response.isSuccessful) {
