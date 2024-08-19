@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,10 +26,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.BottomAppBar
 //import androidx.compose.ui.unit.dp
 
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,22 +40,29 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.djf.newsboss.R
 import com.djf.newsboss.util.APILatestResultItem
 import com.djf.newsboss.util.calculateTimeSince
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsScreen(
     list: State<List<APILatestResultItem>>,
@@ -59,7 +70,20 @@ fun NewsScreen(
     clickCrypto: () -> Unit,
     screen: State<Screen>
 ) {
+    val scrollBehavior =
+        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "News Boss") },
+                scrollBehavior = scrollBehavior, actions = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Image(imageVector = Icons.Filled.Menu, contentDescription = " menu button")
+
+                    }
+                }
+            )
+        },
         bottomBar = {
             BottomAppBar(actions = {
                 Row(
@@ -67,39 +91,44 @@ fun NewsScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    NavigationBarItem(selected = screen.value == Screen.NEWS, onClick = { clickNews() }, icon = {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.news_24dp_e8eaed_fill0_wght400_grad0_opsz24),
-                            modifier = Modifier,
-                            contentDescription = ""
-                        )
-                    }, label = {
-                        Text(text = "news")
-                    })
-                    NavigationBarItem(selected = screen.value == Screen.CRYPTO, onClick = { clickCrypto() }, icon = {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.account_balance_24dp_e8eaed_fill0_wght400_grad0_opsz24),
-                            modifier = Modifier,
-                            contentDescription = ""
-                        )
-                    }, label = {
-                        Text(text = "crypto")
-                    })
+                    NavigationBarItem(
+                        selected = screen.value == Screen.NEWS,
+                        onClick = { clickNews() },
+                        icon = {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.news_24dp_e8eaed_fill0_wght400_grad0_opsz24),
+                                modifier = Modifier,
+                                contentDescription = ""
+                            )
+                        },
+                        label = {
+                            Text(text = "news")
+                        })
+                    NavigationBarItem(
+                        selected = screen.value == Screen.CRYPTO,
+                        onClick = { clickCrypto() },
+                        icon = {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.account_balance_24dp_e8eaed_fill0_wght400_grad0_opsz24),
+                                modifier = Modifier,
+                                contentDescription = ""
+                            )
+                        },
+                        label = {
+                            Text(text = "crypto")
+                        })
                 }
             })
-        }
+        }, modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
-        Surface {
-            NewsList(list = list)
-        }
-
+        NewsList(list = list, it)
     }
 
 }
 
 @Composable
-fun NewsList(list: State<List<APILatestResultItem>>) {
-    LazyColumn() {
+fun NewsList(list: State<List<APILatestResultItem>>, paddingValues: PaddingValues) {
+    LazyColumn(modifier = Modifier.padding(paddingValues)) {
         items(list.value) { item ->
             NewsItem(newsItem = item)
         }
@@ -147,7 +176,8 @@ fun NewsItem(newsItem: APILatestResultItem) {
             Text(
                 text = newsItem.source_id ?: "",
                 modifier = Modifier.padding(5.dp),
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.Blue
             )
             Text(
                 text = calculateTimeSince(newsItem.pubDate ?: ""),
@@ -157,10 +187,17 @@ fun NewsItem(newsItem: APILatestResultItem) {
         }
         Text(
             text = newsItem.title ?: "",
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis
         )
         Spacer(modifier = Modifier.size(5.dp))
-        Text(text = newsItem.description ?: "", style = MaterialTheme.typography.bodyMedium)
+        Text(
+            text = newsItem.description ?: "",
+            style = MaterialTheme.typography.bodyMedium,
+            maxLines = 5,
+            overflow = TextOverflow.Ellipsis
+        )
         HorizontalDivider(modifier = Modifier.padding(5.dp))
 
     }
