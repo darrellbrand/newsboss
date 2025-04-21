@@ -5,16 +5,18 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id("kotlin-android")
+    alias(libs.plugins.compose.compiler)
+
 }
 
 android {
     namespace = "com.djf.newsboss"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.djf.newsboss"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
